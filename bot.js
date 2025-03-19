@@ -11,19 +11,20 @@ const validCommands = ["/start", "/menu", "/help", "/channels", "/calculator", "
 
 // 📌 Handle /start command
 bot.onText(/^\/start$/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Welcome to BrainWave 🤓🤓™! Use /menu to see available commands.");
+    bot.sendMessage(msg.chat.id, "Welcome to BrainWave 🤓🤓™! your friendly AI assistant😁, i might have some glitches but im still undergoing advancements😅.. Use /menu to see available commands and let's get started 🌹💫💫🔥.");
 });
 
 // 📌 Handle /menu command
 bot.onText(/^\/menu$/, (msg) => {
     const menuText = `
-📜 *BrainWave Commands* 📜
+📜 *Brainwave🤓🤓™ Commands* 📜
 
 🔹 /calculator <query> - Solve any math problem  
 🔹 /Google <query> - Search the web  
 🔹 /help - Get help with commands  
 🔹 /channels - Check out recommended channels  
-🔹 /menu - Show this menu again`;
+🔹 /menu - Show this menu again
+🔹_more commands coming Soon🚀🚀✊_;
 
     bot.sendMessage(msg.chat.id, menuText, { parse_mode: "Markdown" });
 });
@@ -34,12 +35,12 @@ bot.onText(/^\/help$/, (msg) => {
 ❓ *Help Section* ❓
 
 ✅ Use /calculator to solve math problems. Example:  
-   \`/calculator 2^3 + 5\` → *Result: 13*  
+   \`/calculator 2^3 + 5\` → *Result: 1
 ✅ Use /Google to search the web. Example:  
    \`/Google Quantum Mechanics\`  
 ✅ Use /menu to see available commands.  
 
-Need more help? Just ask! 😊`;
+Need more help? Just ask! 😊 or contact t.me/Sudais_v1`;
 
     bot.sendMessage(msg.chat.id, helpText, { parse_mode: "Markdown" });
 });
@@ -49,9 +50,9 @@ bot.onText(/^\/channels$/, (msg) => {
     const channelsText = `
 🔗 *Recommended Channels* 🔗
 
-📢 [BrainWave Official](https://t.me/BrainWaveOfficial)  
-📢 [Science Updates](https://t.me/ScienceUpdates)  
-📢 [Math & Physics](https://t.me/MathPhysicsClub)`;
+📢 [BrainWave Official WhatsApp channel](https://whatsapp.com/channel/0029Vayn2EBFMqrgSUiNMf0F)  
+📢 [DEVELOPER](https://wa.me/2349155657641)  
+📢 [BOT 🤖](https://t.me/sudais_v1_bot)`;
 
     bot.sendMessage(msg.chat.id, channelsText, { parse_mode: "Markdown" });
 });
@@ -65,7 +66,7 @@ bot.onText(/^\/calculator (.+)/, (msg, match) => {
         let result = math.evaluate(query);
         bot.sendMessage(chatId, `📌 Result:\n *${result}*`, { parse_mode: "Markdown" });
     } catch (error) {
-        bot.sendMessage(chatId, "❌ Sorry, I couldn't understand that. Try another format.");
+        bot.sendMessage(chatId, "❌ Sorry, I couldn't understand that😑. Try another format.");
     }
 });
 
@@ -79,7 +80,7 @@ bot.onText(/^\/Google (.+)/, (msg, match) => {
 // 📌 Handle unknown commands **only if they start with "/" but aren't valid**
 bot.on('message', (msg) => {
     if (msg.text.startsWith('/') && !validCommands.some(cmd => msg.text.startsWith(cmd))) {
-        bot.sendMessage(msg.chat.id, "⚠️ Unknown command. Type /menu to see available commands.");
+        bot.sendMessage(msg.chat.id, "⚠️ Unknown command🤨. Type /menu to see available commands.");
     }
 });
 
