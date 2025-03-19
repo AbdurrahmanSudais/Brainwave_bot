@@ -1,43 +1,40 @@
 const TelegramBot = require('node-telegram-bot-api');
-const axios = require('axios');
+const math = require('mathjs');
 
 // Replace with your bot token
 const token = '8016191385:AAEGhu97sHcjePlJ2M166Gf7TZ3GXpISv64';
 
-// Create a bot that uses 'polling' to fetch new updates
+// Create a bot instance
 const bot = new TelegramBot(token, { polling: true });
 
-// Welcome message
+// Start Command
 bot.onText(/\/start/, (msg) => {
-    const chatId = msg.chat.id;
-    bot.sendMessage(chatId, "Welcome to BrainWave 🤓🤓™! I'm here to help you with scientific and mathematical queries. Use /calculator or /Google to get started!");
+    bot.sendMessage(msg.chat.id, "Welcome to BrainWave 🤓🤓™! Use /calculator <expression> or /Google <query>.");
 });
 
-// Calculator command
-bot.onText(/\/calculator/, (msg) => {
+// Calculator Command (Now Direct)
+bot.onText(/\/calculator (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
-    bot.sendMessage(chatId, "Please send me a mathematical expression (e.g., 2 + 2, 3 * (4 + 5)) and I'll calculate it for you.");
-    bot.once('message', (msg) => {
-        const expression = msg.text;
-        try {
-            const result = eval(expression);
-            bot.sendMessage(chatId, `The result of ${expression} is ${result}`);
-        } catch (error) {
-            bot.sendMessage(chatId, "Sorry, I couldn't evaluate that expression. Please try again.");
-        }
-    });
+    const expression = match[1];
+
+    try {
+        const result = math.evaluate(expression);
+        bot.sendMessage(chatId, `The result of ${expression} is ${result}`);
+    } catch (error) {
+        bot.sendMessage(chatId, "Invalid expression. Try again.");
+    }
 });
 
-// Google command
-bot.onText(/\/Google (.+)/, async (msg, match) => {
+// Google Search Command (Direct Link)
+bot.onText(/\/Google (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
     const query = match[1];
-    const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-    bot.sendMessage(chatId, `Here are the search results for "${query}": ${url}`);
+    const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+    bot.sendMessage(chatId, `Here’s your search result: [Google it](${searchUrl})`, { parse_mode: "Markdown" });
 });
 
-// Handle unknown commands
-bot.onText(/\/(.*)/, (msg) => {
-    const chatId = msg.chat.id;
-    bot.sendMessage(chatId, "I didn't understand that command. Please use /calculator or /Google.");
+// Unknown Command
+bot.on('message', (msg) => {
+    if (!msg.text.startsWith('/')) return; // Ignore normal messages
+    bot.sendMessage(msg.chat.id, "I didn't understand that. Use /calculator <expression> or /Google <query>.");
 });
