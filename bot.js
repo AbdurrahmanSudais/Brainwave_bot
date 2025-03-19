@@ -8,13 +8,13 @@ console.log("🤓 BrainWave is running...");
 
 // 📌 Handle /start command
 bot.onText(/^\/start$/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Welcome to BrainWave 🤓🤓™! Use /menu to see available commands.");
+    bot.sendMessage(msg.chat.id, "Welcome to BrainWave 🤓🤓™! , your simple AI assistant. Still undergoing advancement😅...........Use /menu to see available commands.");
 });
 
 // 📌 Handle /menu command
 bot.onText(/^\/menu$/, (msg) => {
     const menuText = `
-📜 *BrainWave🤓🤓™ Commands* 📜
+📜 *BrainWave🤓🤓™  Commands* 📜
 
 🔹 /calculator <query> - Solve any math problem  
 🔹 /Google <query> - Search the web  
@@ -36,7 +36,7 @@ bot.onText(/^\/help$/, (msg) => {
    \`/Google Quantum Mechanics\`  
 ✅ Use /menu to see available commands.  
 
-Need more help? Just ask! 😊 or enquire from the dev. t.me/Sudais_v1`;
+Need more help? Just ask! 😊 Or contact t.me/Sudais_v1 😤😋`;
 
     bot.sendMessage(msg.chat.id, helpText, { parse_mode: "Markdown" });
 });
@@ -46,9 +46,9 @@ bot.onText(/^\/channels$/, (msg) => {
     const channelsText = `
 🔗 *Recommended Channels* 🔗
 
-📢 [BrainWave Official WhatsApp Channel](https://whatsapp.com/channel/0029Vayn2EBFMqrgSUiNMf0F)  
-📢 [developer🤓](https://t.me/Sudais_v1)  
-📢 [BOT 🤖](t.me/sudais_v1_bot)`;
+📢 [BrainWave Official WhatsApp channel](https://whatsapp.com/channel/0029Vayn2EBFMqrgSUiNMf0F)  
+📢 [DEVELOPER 🤓](https://t.me/Sudais_v1)  
+📢 [BOT 🤖](https://t.me/sudais_v1_bot)`;
 
     bot.sendMessage(msg.chat.id, channelsText, { parse_mode: "Markdown" });
 });
@@ -73,11 +73,10 @@ bot.onText(/^\/Google (.+)/, (msg, match) => {
     bot.sendMessage(msg.chat.id, `🔍 Here are the search results for "${query}":\n${searchUrl}`);
 });
 
-// 📌 Handle unknown commands **only if no other command matches**
+// 📌 Handle unknown commands **only if they start with "/" and haven't matched any known commands**
 bot.on('message', (msg) => {
-    const chatId = msg.chat.id;
-    if (msg.text.startsWith('/')) {
-        bot.sendMessage(chatId, "⚠️ Unknown command. Type /menu to see available commands.");
+    if (msg.text.startsWith('/') && !msg.text.includes(' ')) {
+        bot.sendMessage(msg.chat.id, "⚠️ Unknown command. Type /menu to see available commands.");
     }
 });
 
