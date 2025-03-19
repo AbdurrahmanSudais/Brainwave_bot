@@ -35,13 +35,12 @@ bot.onText(/^\/help$/, (msg) => {
 ❓ *Help Section* ❓
 
 ✅ Use /calculator to solve math problems. Example:  
-   \`/calculator 2^3 + 5\` → *Result: 1
+   \`/calculator 2^3 + 5\` → *Result: 13*  
 ✅ Use /Google to search the web. Example:  
    \`/Google Quantum Mechanics\`  
 ✅ Use /menu to see available commands.  
 
-Need more help? Just ask! 😊 or contact t.me/Sudais_v1`;
-
+Need more help? Just ask! 😊`;
     bot.sendMessage(msg.chat.id, helpText, { parse_mode: "Markdown" });
 });
 
