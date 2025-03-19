@@ -1,40 +1,44 @@
 const TelegramBot = require('node-telegram-bot-api');
-const math = require('mathjs');
 
-// Replace with your bot token
-const token = '8016191385:AAEGhu97sHcjePlJ2M166Gf7TZ3GXpISv64';
+// Replace with your actual bot token
+const token = '8016191385:AAEGhu97sHcjePlJ2M166Gf7TZ3GXpISv64';  
 
-// Create a bot instance
+if (!token) {
+    console.error("Error: BOT_TOKEN is missing. Please add your bot token.");
+    process.exit(1);
+}
+
 const bot = new TelegramBot(token, { polling: true });
 
-// Start Command
+console.log("🤖 Bot is running...");
+
+// Handle /start command
 bot.onText(/\/start/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Welcome to BrainWave 🤓🤓™! Use /calculator <expression> or /Google <query>.");
+    bot.sendMessage(msg.chat.id, `Welcome, ${msg.from.first_name}! 🤖\nI'm Abdurrahman Sudais Jr. How may I help you? Type /menu to see my command list.`);
 });
 
-// Calculator Command (Now Direct)
-bot.onText(/\/calculator (.+)/, (msg, match) => {
-    const chatId = msg.chat.id;
-    const expression = match[1];
+// Handle /menu command
+bot.onText(/\/menu/, (msg) => {
+    const menuText = `
+📜 *Menu Commands* 📜
 
-    try {
-        const result = math.evaluate(expression);
-        bot.sendMessage(chatId, `The result of ${expression} is ${result}`);
-    } catch (error) {
-        bot.sendMessage(chatId, "Invalid expression. Try again.");
-    }
+🔹 /start- Start the bot  
+🔹 /menu- Show this menu  
+🔹 /help- Get help  
+
+_More features coming soon! 🚀_`;
+
+    bot.sendMessage(msg.chat.id, menuText, { parse_mode: "Markdown" });
 });
 
-// Google Search Command (Direct Link)
-bot.onText(/\/Google (.+)/, (msg, match) => {
-    const chatId = msg.chat.id;
-    const query = match[1];
-    const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-    bot.sendMessage(chatId, `Here’s your search result: [Google it](${searchUrl})`, { parse_mode: "Markdown" });
-});
-
-// Unknown Command
+// Handle other messages (ignoring commands)
 bot.on('message', (msg) => {
-    if (!msg.text.startsWith('/')) return; // Ignore normal messages
-    bot.sendMessage(msg.chat.id, "I didn't understand that. Use /calculator <expression> or /Google <query>.");
+    const chatId = msg.chat.id;
+    if (msg.text.startsWith('/')) return; // Ignore commands
+    bot.sendMessage(chatId, `You said: "${msg.text}"`);
+});
+
+// Handle errors to prevent crashes
+bot.on('polling_error', (error) => {
+    console.error("Polling error:", error);
 });
