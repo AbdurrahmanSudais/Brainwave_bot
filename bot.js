@@ -1,44 +1,66 @@
 const TelegramBot = require('node-telegram-bot-api');
+const math = require('mathjs');
 
-// Replace with your actual bot token
-const token = '8016191385:AAEGhu97sHcjePlJ2M166Gf7TZ3GXpISv64';  
+// Use an environment variable for security
+const token = process.env.BOT_TOKEN || '8016191385:AAEGhu97sHcjePlJ2M166Gf7TZ3GXpISv64';
 
-if (!token) {
-    console.error("Error: BOT_TOKEN is missing. Please add your bot token.");
+if (!token || token.startsWith('YOUR_BOT_TOKEN')) {
+    console.error("❌ Error: BOT_TOKEN is missing. Set it in Railway.");
     process.exit(1);
 }
 
+// Create the bot
 const bot = new TelegramBot(token, { polling: true });
 
-console.log("🤖 Bot is running...");
+console.log("✅ BrainWave 🤓🤓™ is running...");
 
-// Handle /start command
+// /start command
 bot.onText(/\/start/, (msg) => {
-    bot.sendMessage(msg.chat.id, `Welcome, ${msg.from.first_name}! 🤖\nI'm Abdurrahman Sudais Jr. How may I help you? Type /menu to see my command list.`);
+    bot.sendMessage(msg.chat.id, `👋 Welcome, *${msg.from.first_name}*!  
+I'm *BrainWave 🤓🤓™*, your smart assistant.  
+Use /menu to see available commands.`, { parse_mode: "Markdown" });
 });
 
-// Handle /menu command
+// /menu command
 bot.onText(/\/menu/, (msg) => {
     const menuText = `
-📜 *Menu Commands* 📜
+📜 *BrainWave 🤓🤓™ Commands* 📜
 
-🔹 /start- Start the bot  
-🔹 /menu- Show this menu  
-🔹 /help- Get help  
+🔹 /start - Start the bot  
+🔹 /menu - Show this menu  
+🔹 /help - Get help  
+🔹 /calculator <expression> - Solve math problems  
 
-_More features coming soon! 🚀_`;
+*More features coming soon! 🚀*`;
 
     bot.sendMessage(msg.chat.id, menuText, { parse_mode: "Markdown" });
 });
 
-// Handle other messages (ignoring commands)
+// /help command
+bot.onText(/\/help/, (msg) => {
+    bot.sendMessage(msg.chat.id, "💡 Need help? Use /menu to see available commands. I'm here to assist you!");
+});
+
+// /calculator command (safe math evaluation)
+bot.onText(/\/calculator (.+)/, (msg, match) => {
+    const chatId = msg.chat.id;
+    const expression = match[1];
+
+    try {
+        const result = math.evaluate(expression);
+        bot.sendMessage(chatId, `🧮 *Calculation:* ${expression}  
+📊 *Result:* ${result}`, { parse_mode: "Markdown" });
+    } catch (error) {
+        bot.sendMessage(chatId, "❌ Invalid expression. Please try again.");
+    }
+});
+
+// Handle messages (ignores commands)
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
     if (msg.text.startsWith('/')) return; // Ignore commands
-    bot.sendMessage(chatId, `You said: "${msg.text}"`);
+    bot.sendMessage(chatId, `📩 *You said:* "${msg.text}"`, { parse_mode: "Markdown" });
 });
 
-// Handle errors to prevent crashes
-bot.on('polling_error', (error) => {
-    console.error("Polling error:", error);
-});
+// Handle errors
+bot.on('polling_error', (error) => console.error("⚠️ Polling error:", error));
