@@ -6,15 +6,18 @@ const bot = new TelegramBot(token, { polling: true });
 
 console.log("🤓 BrainWave is running...");
 
+// List of valid commands
+const validCommands = ["/start", "/menu", "/help", "/channels", "/calculator", "/Google"];
+
 // 📌 Handle /start command
 bot.onText(/^\/start$/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Welcome to BrainWave 🤓🤓™! , your simple AI assistant. Still undergoing advancement😅...........Use /menu to see available commands.");
+    bot.sendMessage(msg.chat.id, "Welcome to BrainWave 🤓🤓™! Use /menu to see available commands.");
 });
 
 // 📌 Handle /menu command
 bot.onText(/^\/menu$/, (msg) => {
     const menuText = `
-📜 *BrainWave🤓🤓™  Commands* 📜
+📜 *BrainWave Commands* 📜
 
 🔹 /calculator <query> - Solve any math problem  
 🔹 /Google <query> - Search the web  
@@ -36,7 +39,7 @@ bot.onText(/^\/help$/, (msg) => {
    \`/Google Quantum Mechanics\`  
 ✅ Use /menu to see available commands.  
 
-Need more help? Just ask! 😊 Or contact t.me/Sudais_v1 😤😋`;
+Need more help? Just ask! 😊`;
 
     bot.sendMessage(msg.chat.id, helpText, { parse_mode: "Markdown" });
 });
@@ -46,9 +49,9 @@ bot.onText(/^\/channels$/, (msg) => {
     const channelsText = `
 🔗 *Recommended Channels* 🔗
 
-📢 [BrainWave Official WhatsApp channel](https://whatsapp.com/channel/0029Vayn2EBFMqrgSUiNMf0F)  
-📢 [DEVELOPER 🤓](https://t.me/Sudais_v1)  
-📢 [BOT 🤖](https://t.me/sudais_v1_bot)`;
+📢 [BrainWave Official](https://t.me/BrainWaveOfficial)  
+📢 [Science Updates](https://t.me/ScienceUpdates)  
+📢 [Math & Physics](https://t.me/MathPhysicsClub)`;
 
     bot.sendMessage(msg.chat.id, channelsText, { parse_mode: "Markdown" });
 });
@@ -73,9 +76,9 @@ bot.onText(/^\/Google (.+)/, (msg, match) => {
     bot.sendMessage(msg.chat.id, `🔍 Here are the search results for "${query}":\n${searchUrl}`);
 });
 
-// 📌 Handle unknown commands **only if they start with "/" and haven't matched any known commands**
+// 📌 Handle unknown commands **only if they start with "/" but aren't valid**
 bot.on('message', (msg) => {
-    if (msg.text.startsWith('/') && !msg.text.includes(' ')) {
+    if (msg.text.startsWith('/') && !validCommands.some(cmd => msg.text.startsWith(cmd))) {
         bot.sendMessage(msg.chat.id, "⚠️ Unknown command. Type /menu to see available commands.");
     }
 });
