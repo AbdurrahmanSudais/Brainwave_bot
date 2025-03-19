@@ -7,14 +7,14 @@ const bot = new TelegramBot(token, { polling: true });
 console.log("🤓 BrainWave is running...");
 
 // 📌 Handle /start command
-bot.onText(/\/start/, (msg) => {
+bot.onText(/^\/start$/, (msg) => {
     bot.sendMessage(msg.chat.id, "Welcome to BrainWave 🤓🤓™! Use /menu to see available commands.");
 });
 
 // 📌 Handle /menu command
-bot.onText(/\/menu/, (msg) => {
+bot.onText(/^\/menu$/, (msg) => {
     const menuText = `
-📜 *BrainWave🤓🤓™  Commands* 📜
+📜 *BrainWave🤓🤓™ Commands* 📜
 
 🔹 /calculator <query> - Solve any math problem  
 🔹 /Google <query> - Search the web  
@@ -26,7 +26,7 @@ bot.onText(/\/menu/, (msg) => {
 });
 
 // 📌 Handle /help command
-bot.onText(/\/help/, (msg) => {
+bot.onText(/^\/help$/, (msg) => {
     const helpText = `
 ❓ *Help Section* ❓
 
@@ -36,25 +36,25 @@ bot.onText(/\/help/, (msg) => {
    \`/Google Quantum Mechanics\`  
 ✅ Use /menu to see available commands.  
 
-Need more help? Just ask! 😊 or contact t.me/Sudais_v1`;
+Need more help? Just ask! 😊 or enquire from the dev. t.me/Sudais_v1`;
 
     bot.sendMessage(msg.chat.id, helpText, { parse_mode: "Markdown" });
 });
 
 // 📌 Handle /channels command
-bot.onText(/\/channels/, (msg) => {
+bot.onText(/^\/channels$/, (msg) => {
     const channelsText = `
 🔗 *Recommended Channels* 🔗
 
-📢 [BrainWave Dev.](https://t.me/Sudais_v1)  
-📢 [WhatsApp channel](https://whatsapp.com/channel/0029Vayn2EBFMqrgSUiNMf0F)  
-📢 [Bot](https://t.me/sudais_v1_bot, @Brainwave_v1_bot)`;
+📢 [BrainWave Official WhatsApp Channel](https://whatsapp.com/channel/0029Vayn2EBFMqrgSUiNMf0F)  
+📢 [developer🤓](https://t.me/Sudais_v1)  
+📢 [BOT 🤖](t.me/sudais_v1_bot)`;
 
     bot.sendMessage(msg.chat.id, channelsText, { parse_mode: "Markdown" });
 });
 
 // 📌 Universal AI Calculator
-bot.onText(/\/calculator (.+)/, (msg, match) => {
+bot.onText(/^\/calculator (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
     const query = match[1].trim();
 
@@ -66,9 +66,19 @@ bot.onText(/\/calculator (.+)/, (msg, match) => {
     }
 });
 
-// 📌 Handle unknown commands
-bot.onText(/\/(.*)/, (msg) => {
-    bot.sendMessage(msg.chat.id, "⚠️ Unknown command. Type /menu to see available commands.");
+// 📌 Handle Google Search (basic)
+bot.onText(/^\/Google (.+)/, (msg, match) => {
+    const query = match[1];
+    const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+    bot.sendMessage(msg.chat.id, `🔍 Here are the search results for "${query}":\n${searchUrl}`);
+});
+
+// 📌 Handle unknown commands **only if no other command matches**
+bot.on('message', (msg) => {
+    const chatId = msg.chat.id;
+    if (msg.text.startsWith('/')) {
+        bot.sendMessage(chatId, "⚠️ Unknown command. Type /menu to see available commands.");
+    }
 });
 
 // Handle errors
