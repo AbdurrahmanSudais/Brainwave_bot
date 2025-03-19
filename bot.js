@@ -11,20 +11,19 @@ const validCommands = ["/start", "/menu", "/help", "/channels", "/calculator", "
 
 // 📌 Handle /start command
 bot.onText(/^\/start$/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Welcome to BrainWave 🤓🤓™! your friendly AI assistant😁, i might have some glitches but im still undergoing advancements😅.. Use /menu to see available commands and let's get started 🌹💫💫🔥.");
+    bot.sendMessage(msg.chat.id, "Welcome to BrainWave 🤓🤓™!, your friendly AI partner😁. still in progress 🥲😅 Use /menu to see available commands let's get started 💫🔥🔥.");
 });
 
 // 📌 Handle /menu command
 bot.onText(/^\/menu$/, (msg) => {
     const menuText = `
-📜 *Brainwave🤓🤓™ Commands* 📜
+📜 *BrainWave🤓🤓™ Commands* 📜
 
 🔹 /calculator <query> - Solve any math problem  
 🔹 /Google <query> - Search the web  
 🔹 /help - Get help with commands  
 🔹 /channels - Check out recommended channels  
-🔹 /menu - Show this menu again
-🔹_more commands coming Soon🚀🚀✊_;
+🔹 /menu - Show this menu again`;
 
     bot.sendMessage(msg.chat.id, menuText, { parse_mode: "Markdown" });
 });
@@ -41,6 +40,7 @@ bot.onText(/^\/help$/, (msg) => {
 ✅ Use /menu to see available commands.  
 
 Need more help? Just ask! 😊`;
+
     bot.sendMessage(msg.chat.id, helpText, { parse_mode: "Markdown" });
 });
 
@@ -49,9 +49,9 @@ bot.onText(/^\/channels$/, (msg) => {
     const channelsText = `
 🔗 *Recommended Channels* 🔗
 
-📢 [BrainWave Official WhatsApp channel](https://whatsapp.com/channel/0029Vayn2EBFMqrgSUiNMf0F)  
-📢 [DEVELOPER](https://wa.me/2349155657641)  
-📢 [BOT 🤖](https://t.me/sudais_v1_bot)`;
+📢 [BrainWave Official WhatsApp Channel](https://whatsapp.com/channel/0029Vayn2EBFMqrgSUiNMf0F)  
+📢 [DEVELOPER 🤫](https://wa.me/2349155657641)  
+📢 [BOT LINK🤖](t.me/sudais_v1_bot)`;
 
     bot.sendMessage(msg.chat.id, channelsText, { parse_mode: "Markdown" });
 });
